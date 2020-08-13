@@ -18,7 +18,7 @@ const routes = [
     component: view,
     children: [
       {
-        path: '/css',
+        path: 'css',
         name: 'css',
         component: css
       }
