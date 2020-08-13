@@ -4,7 +4,8 @@ const path = require("path")
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const isDev = process.env.NODE_ENV === 'development'//cross-env :兼容mac window
 const HtmlPlugin = require('html-webpack-plugin');
-const webpack = require('webpack')
+const webpack = require('webpack');
+const ROOT_PATH = path.resolve(__dirname);
 const config = {
   target: "web",
   mode: "development",
@@ -64,7 +65,12 @@ const config = {
       //css预处理器 
       {
         test: /\.scss$/,
-        use: ["vue-style-loader", "css-loader", "sass-loader"]//每个loader只处理其部分
+        use: ["vue-style-loader", "css-loader", {
+          loader: "postcss-loader",
+          options: {
+            sourceMap: true
+          }
+        }, "sass-loader"]//每个loader只处理其部分
       },
       {
         test: /\.sass$/,
@@ -88,7 +94,15 @@ const config = {
       template: "./index.html",
 
     })
-  ]
+  ],
+  /*resolver 帮助 webpack 找到 bundle 中需要引入的模块代码，这些代码在包含在每个 require/import 语句中。 当打包模块时，webpack 使用 enhanced-resolve 来解析文件路径*/
+  resolve: {
+    alias: {
+      vue$: "vue/dist/vue.esm.js",
+      "@": path.resolve(ROOT_PATH, "src")
+    },
+    extensions: ["*", ".js", ".vue", ".json"]
+  },
 }
 
 //针对不同环境打包 build or dev
@@ -101,7 +115,7 @@ if (isDev) {
       errors: true,
     },
     open: true,//自动打开浏览器
-      //没有配置路由的地址引进index
+    //没有配置路由的地址引进index
     // historyFallback: {    },
     hot: true,//改变组件后，刷新组件不刷页面 热加载
   }

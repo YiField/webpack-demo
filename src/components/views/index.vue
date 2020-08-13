@@ -1,5 +1,12 @@
 <template>
   <div>
     viewfffff
+    <router-view></router-view>
+
   </div>
 </template>
+<script>
+export default {
+  name:'views'
+}
+</script>
