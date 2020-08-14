@@ -1,8 +1,6 @@
 <template>
   <div>
-    viewfffff
     <router-view></router-view>
-
   </div>
 </template>
 <script>

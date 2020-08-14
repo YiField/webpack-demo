@@ -6,6 +6,8 @@ const isDev = process.env.NODE_ENV === 'development'//cross-env :兼容mac windo
 const HtmlPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const ROOT_PATH = path.resolve(__dirname);
+const ExtractPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtracPlugin = require('mini-css-extract-plugin');
 const config = {
   target: "web",
   mode: "development",
@@ -63,24 +65,24 @@ const config = {
         ]
       },
       //css预处理器 
-      {
-        test: /\.scss$/,
-        use: ["vue-style-loader", "css-loader", {
-          loader: "postcss-loader",
-          options: {
-            sourceMap: true
-          }
-        }, "sass-loader"]//每个loader只处理其部分
-      },
-      {
-        test: /\.sass$/,
-        use: [
-          "vue-style-loader",
-          "css-loader",
-          "postcss-loader",
-          "sass-loader?indentedSyntax"
-        ]
-      },
+      // {
+      //   test: /\.scss$/,
+      //   use: ["style-loader", "css-loader", {
+      //     loader: "postcss-loader",
+      //     options: {
+      //       sourceMap: true
+      //     }
+      //   }, "sass-loader"]//每个loader只处理其部分
+      // },
+      // {
+      //   test: /\.sass$/,
+      //   use: [
+      //     "style-loader",
+      //     "css-loader",
+      //     "postcss-loader",
+      //     "sass-loader?indentedSyntax"
+      //   ]
+      // },
     ]
   },
   plugins: [
@@ -107,6 +109,24 @@ const config = {
 
 //针对不同环境打包 build or dev
 if (isDev) {
+  config.module.rules.push({
+    test: /\.scss$/,
+    use: ["style-loader", "css-loader", {
+      loader: "postcss-loader",
+      options: {
+        sourceMap: true
+      }
+    }, "sass-loader"]//每个loader只处理其部分
+  });
+  config.module.rules.push({
+    test: /\.sass$/,
+    use: [
+      "style-loader",
+      "css-loader",
+      "postcss-loader",
+      "sass-loader?indentedSyntax"
+    ]
+  })
   config.devtool = '#cheap-module-eval-source-map';//浏览器调试显示源码
   config.devServer = {
     port: 8009,
@@ -123,5 +143,84 @@ if (isDev) {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
+} else {
+  config.output.filename = '[name].[chunkhash:8].js'
+  config.module.rules.push(
+    test: /\.scss$/,
+    use: [
+    'style-loader',
+    'css-loader',
+    {
+      loader: 'postcss-loader',
+      options: {
+        sourceMap: true
+      }
+    },
+    'sass-loader'
+  ]
+  )
+  // config.module.rules.push({
+  //   test: /\.scss$/,
+  //   use: ExtractPlugin.extract
+  //     ({
+  //       fallback: 'style-loader',
+  //       use: [
+  //         'css-loader',
+  //         {
+  //           loader: 'postcss-loader',
+  //           options: {
+  //             sourceMap: true
+  //           }
+  //         },
+  //         'sass-loader'
+  //       ]
+  //     }),
+  // })
+  config.module.rules.push({
+    test: /\.sass$/,
+   use:[
+
+      'style-loader',
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true
+        }
+      },
+      'sass-loader?indentedSyntax'
+   ]
+  })
+  config.module.rules.push({
+    test: /\.sass$/,
+    use: [
+      'style-loader',
+      MiniCssExtracPlugin.loader,
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true
+        }
+      },
+      'sass-loader?indentedSyntax'
+    ]
+    // use: ExtractPlugin.extract
+    //   ({
+    //     fallback: 'style-loader',
+    //     use: [
+    //       'css-loader',
+    //       {
+    //         loader: 'postcss-loader',
+    //         options: {
+    //           sourceMap: true
+    //         }
+    //       },
+    //       'sass-loader?indentedSyntax'
+    //     ]
+    //   }),
+  })
+  config.plugins.push(new MiniCssExtracPlugin())
+  // config.plugins.push(new ExtractPlugin('styles.[contentHash:8].css'))
 }
 module.exports = config
