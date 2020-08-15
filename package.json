@@ -21,6 +21,7 @@
     "cross-env": "^7.0.2",
     "css-loader": "^4.2.1",
     "enhanced-resolve": "^4.3.0",
+    "epubjs": "^0.3.88",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
