@@ -145,19 +145,20 @@ if (isDev) {
   )
 } else {
   config.output.filename = '[name].[chunkhash:8].js'
-  config.module.rules.push(
+  config.module.rules.push({
     test: /\.scss$/,
     use: [
-    'style-loader',
-    'css-loader',
-    {
-      loader: 'postcss-loader',
-      options: {
-        sourceMap: true
-      }
-    },
-    'sass-loader'
-  ]
+      'style-loader',
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true
+        }
+      },
+      'sass-loader'
+    ]
+  }
   )
   // config.module.rules.push({
   //   test: /\.scss$/,
@@ -178,7 +179,7 @@ if (isDev) {
   // })
   config.module.rules.push({
     test: /\.sass$/,
-   use:[
+    use: [
 
       'style-loader',
       'css-loader',
@@ -189,7 +190,7 @@ if (isDev) {
         }
       },
       'sass-loader?indentedSyntax'
-   ]
+    ]
   })
   config.module.rules.push({
     test: /\.sass$/,
