@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 const view = () => import('../components/views')
 const css = () => import('../components/views/css')
 const home = () => import('../components/home.vue')
+const eReader = () => import('../components/eReader');
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
         component: css
       }
     ]
+  },
+  {
+    path: '/eReader',
+    name: 'eReader',
+    component: eReader
   }
 ]
 export default new VueRouter({ routes })

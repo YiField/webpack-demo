@@ -8,13 +8,16 @@ const webpack = require('webpack');
 const ROOT_PATH = path.resolve(__dirname);
 const ExtractPlugin = require('extract-text-webpack-plugin');
 const MiniCssExtracPlugin = require('mini-css-extract-plugin');
+const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? './' : '/';
+
 const config = {
   target: "web",
   mode: "development",
   entry: path.join(__dirname, 'src/index.js'),
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, 'dist')
+    path: path.join(__dirname, 'dist'),
+    publicPath: PUBLIC_PATH
   },
   module: {
     rules: [
