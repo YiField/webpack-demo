@@ -9,6 +9,7 @@ const ROOT_PATH = path.resolve(__dirname);
 const ExtractPlugin = require('extract-text-webpack-plugin');
 const MiniCssExtracPlugin = require('mini-css-extract-plugin');
 const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? './' : '/';
+const CopyWebpackplugin = require('copy-webpack-plugin')
 
 const config = {
   target: "web",
@@ -67,25 +68,13 @@ const config = {
           }
         ]
       },
-      //css预处理器 
-      // {
-      //   test: /\.scss$/,
-      //   use: ["style-loader", "css-loader", {
-      //     loader: "postcss-loader",
-      //     options: {
-      //       sourceMap: true
-      //     }
-      //   }, "sass-loader"]//每个loader只处理其部分
-      // },
-      // {
-      //   test: /\.sass$/,
-      //   use: [
-      //     "style-loader",
-      //     "css-loader",
-      //     "postcss-loader",
-      //     "sass-loader?indentedSyntax"
-      //   ]
-      // },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'font/[name].[ext]'
+        }
+      }
     ]
   },
   plugins: [
@@ -97,7 +86,14 @@ const config = {
     }),
     new HtmlPlugin({
       template: "./index.html",
-
+    }),
+    new CopyWebpackplugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'static'),
+          to: 'static/'
+        }
+      ]
     })
   ],
   /*resolver 帮助 webpack 找到 bundle 中需要引入的模块代码，这些代码在包含在每个 require/import 语句中。 当打包模块时，webpack 使用 enhanced-resolve 来解析文件路径*/
@@ -163,23 +159,6 @@ if (isDev) {
     ]
   }
   )
-  // config.module.rules.push({
-  //   test: /\.scss$/,
-  //   use: ExtractPlugin.extract
-  //     ({
-  //       fallback: 'style-loader',
-  //       use: [
-  //         'css-loader',
-  //         {
-  //           loader: 'postcss-loader',
-  //           options: {
-  //             sourceMap: true
-  //           }
-  //         },
-  //         'sass-loader'
-  //       ]
-  //     }),
-  // })
   config.module.rules.push({
     test: /\.sass$/,
     use: [
@@ -209,20 +188,6 @@ if (isDev) {
       },
       'sass-loader?indentedSyntax'
     ]
-    // use: ExtractPlugin.extract
-    //   ({
-    //     fallback: 'style-loader',
-    //     use: [
-    //       'css-loader',
-    //       {
-    //         loader: 'postcss-loader',
-    //         options: {
-    //           sourceMap: true
-    //         }
-    //       },
-    //       'sass-loader?indentedSyntax'
-    //     ]
-    //   }),
   })
   config.plugins.push(new MiniCssExtracPlugin())
   // config.plugins.push(new ExtractPlugin('styles.[contentHash:8].css'))
