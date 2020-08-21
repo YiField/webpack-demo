@@ -13,7 +13,16 @@
         </div>
       </div>
     </div>
-    <MenuBar :ifTitleAndMenuShow="ifTitleAndMenuShow" :fontSizeList="fontSizeList" :defaultFontSize="defaultFontSize" ref="menuBar" @setFontSize="setFontSize"></MenuBar>
+    <MenuBar
+      :ifTitleAndMenuShow="ifTitleAndMenuShow"
+      :fontSizeList="fontSizeList"
+      :defaultFontSize="defaultFontSize"
+      :themeList="themeList"
+      :defaultTheme="defaultTheme"
+      ref="menuBar"
+      @setFontSize="setFontSize"
+      @setTheme="setTheme"
+    ></MenuBar>
   </div>
 </template>
 <script>
@@ -37,7 +46,46 @@ export default {
         { fontSize: 22 },
         { fontSize: 24 },
       ],
-      defaultFontSize:12,
+      defaultFontSize: 12,
+      themeList: [
+        {
+          name: "default",
+          style: {
+            body: {
+              color: "#000",
+              background: "#fff",
+            },
+          },
+        },
+        {
+          name: "eye",
+          style: {
+            body: {
+              color: "#000",
+              background: "#ceeaba",
+            },
+          },
+        },
+        {
+          name: "night",
+          style: {
+            body: {
+              color: "#fff",
+              background: "#000",
+            },
+          },
+        },
+        {
+          name: "gold",
+          style: {
+            body: {
+              color: "#000",
+              background: "rgb(241,236,226)",
+            },
+          },
+        },
+      ],
+      defaultTheme:0
     };
   },
   methods: {
@@ -51,7 +99,22 @@ export default {
 
       //theme对象
       this.themes = this.rendition.themes;
-      this.setFontSize(this.defaultFontSize)
+      //字体设置
+      this.setFontSize(this.defaultFontSize);
+      // 注册主题
+      this.registerTheme();
+
+      this.setTheme(0)
+    },
+    setTheme(index){
+      console.log('pa',index)
+      this.defaultTheme = index;
+      this.themes.select(this.themeList[index].name);
+    },
+    registerTheme(){
+      this.themeList.forEach(theme =>{
+        this.themes.register(theme.name,theme.style)
+      })
     },
     prevPage() {
       if (this.rendition) {
@@ -71,12 +134,12 @@ export default {
         this.$refs.menuBar.hideSetting();
       }
     },
-    setFontSize(fontSize){
+    setFontSize(fontSize) {
       this.defaultFontSize = fontSize;
-      if(this.themes){
-        this.themes.fontSize(fontSize + 'px');
+      if (this.themes) {
+        this.themes.fontSize(fontSize + "px");
       }
-    }
+    },
   },
   mounted() {
     this.showEpub();
@@ -103,7 +166,7 @@ export default {
       .left {
         flex: 0 0 px2rem(100);
         font-size: px2rem(80);
-        @include center // background-color: aquamarine;;;;
+        @include center // background-color: aquamarine;;;;;
       }
       .center {
         flex: 1;
@@ -111,7 +174,7 @@ export default {
       .right {
         flex: 0 0 px2rem(100);
         font-size: px2rem(80);
-        @include center // background-color: violet;;;;
+        @include center // background-color: violet;;;;;
       }
     }
   }
