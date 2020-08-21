@@ -1,51 +1,43 @@
 <template>
   <div id="ebook" class="ebook">
-    <div class="title-wrapper" v-show="ifTitleAndMenuShow">
-      <div class="left">
-        <span class="fa fa-arrow-left"></span>
-      </div>
-      <div class="right">
-        <div class="icon-wrapper">
-          <span class="fa fa-shopping-cart"></span>
-        </div>
-        <div class="icon-wrapper">
-          <span class="fa fa-ellipsis-h"></span>
-        </div>
-      </div>
-    </div>
+    <TitleBar :ifTitleAndMenuShow="ifTitleAndMenuShow"></TitleBar>
     <div class="reader-wrapper">
       <div id="epub-reader"></div>
       <div class="mask">
-        <div class="left" @click="prevPage"></div>
+        <div class="left" @click="prevPage">
+          <span class="icon iconfont icon-left_circle"></span>
+        </div>
         <div class="center" @click="toggleTitleAndMenu"></div>
-        <div class="right" @click="nextPage"></div>
+        <div class="right" @click="nextPage">
+          <span class="icon iconfont icon-right_circle"></span>
+        </div>
       </div>
     </div>
-    <div class="menu-wrapper" v-show="ifTitleAndMenuShow">
-      <div class="icon-wrapper">
-        <span class="fa fa-ad"></span>
-      </div>
-      <div class="icon-wrapper">
-        <span class="fa fa-ad"></span>
-      </div>
-      <div class="icon-wrapper">
-        <span class="fa fa-ad"></span>
-      </div>
-      <div class="icon-wrapper">
-        <span class="fa fa-ad"></span>
-      </div>
-    </div>
+    <MenuBar :ifTitleAndMenuShow="ifTitleAndMenuShow" :fontSizeList="fontSizeList" :defaultFontSize="defaultFontSize" ref="menuBar" @setFontSize="setFontSize"></MenuBar>
   </div>
 </template>
 <script>
 import Epub from "epubjs";
+import TitleBar from "@/components/eReader/TitleBar";
+import MenuBar from "@/components/eReader/MenuBar";
 const DOWNLOAD_URL =
   "/static/machiavelli-history-of-florence-and-of-the-affairs-of-italy.epub";
+
 export default {
   name: "eReader",
   data() {
     return {
       ifTitleAndMenuShow: false,
+      fontSizeList: [
+        { fontSize: 12 },
+        { fontSize: 14 },
+        { fontSize: 16 },
+        { fontSize: 17 },
+        { fontSize: 20 },
+        { fontSize: 22 },
+        { fontSize: 24 },
+      ],
+      defaultFontSize:12,
     };
   },
   methods: {
@@ -56,6 +48,10 @@ export default {
         height: window.innerHeight,
       });
       this.rendition.display();
+
+      //theme对象
+      this.themes = this.rendition.themes;
+      this.setFontSize(this.defaultFontSize)
     },
     prevPage() {
       if (this.rendition) {
@@ -70,11 +66,24 @@ export default {
       }
     },
     toggleTitleAndMenu() {
-      this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
+      this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow;
+      if (!this.ifTitleAndMenuShow) {
+        this.$refs.menuBar.hideSetting();
+      }
+    },
+    setFontSize(fontSize){
+      this.defaultFontSize = fontSize;
+      if(this.themes){
+        this.themes.fontSize(fontSize + 'px');
+      }
     }
   },
   mounted() {
     this.showEpub();
+  },
+  components: {
+    TitleBar,
+    MenuBar,
   },
 };
 </script>
@@ -82,31 +91,6 @@ export default {
 @import "../../assets/styles/common.scss";
 .ebook {
   position: relative;
-  .title-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 101;
-    width: 100%;
-    height: px2rem(48);
-    background: #fff;
-    box-shadow: 0 px2rem(8) px2rem(8) rgba(0, 0, 0, 0.15);
-    display: flex;
-    .left {
-      flex: 0 0 px2rem(60);
-      @include center;
-    }
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-      .icon-wrapper {
-        display: inline-block;
-        flex: 0 0 px2rem(60);
-        @include center;
-      }
-    }
-  }
   .reader-wrapper {
     .mask {
       position: absolute;
@@ -118,29 +102,17 @@ export default {
       z-index: 100;
       .left {
         flex: 0 0 px2rem(100);
-        // background-color: aquamarine;
+        font-size: px2rem(80);
+        @include center // background-color: aquamarine;;;;
       }
       .center {
         flex: 1;
       }
       .right {
         flex: 0 0 px2rem(100);
-        // background-color: violet;
+        font-size: px2rem(80);
+        @include center // background-color: violet;;;;
       }
-    }
-  }
-  .menu-wrapper {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 101;
-    width: 100%;
-    height: px2rem(48);
-    background: #fff;
-    box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, 0.15);
-    .icon-wrapper {
-      flex: 1;
-      @include center;
     }
   }
 }
