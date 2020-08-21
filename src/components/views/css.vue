@@ -30,6 +30,39 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    spawn(genF) {
+      return new Promise(function(reslove, reject) {
+        const gen = genF();
+        function step(nextF) {
+          let next;
+          try {
+            next = nextF();
+          } catch (e) {
+            return reject(e);
+          }
+          if (next.done) {
+            return reslove(next.value);
+          }
+          Promise.reslove(next.value).then(
+            function(v) {
+              step(function() {
+                return gen.next(v);
+              });
+            },
+            function(e) {
+              step(function() {
+                return gen.throw(e);
+              });
+            }
+          );
+        }
+        step(function() {
+          return gen.next(undefined);
+        });
+      });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
