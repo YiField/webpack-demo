@@ -19,9 +19,13 @@
       :defaultFontSize="defaultFontSize"
       :themeList="themeList"
       :defaultTheme="defaultTheme"
+      :bookAvailable="bookAvailable"
+      :navigation="navigation"
       ref="menuBar"
       @setFontSize="setFontSize"
       @setTheme="setTheme"
+      @onProgressChange="onProgressChange"
+      @jumpTo="jumpTo"
     ></MenuBar>
   </div>
 </template>
@@ -85,16 +89,28 @@ export default {
           },
         },
       ],
-      defaultTheme:0
+      defaultTheme: 0,
+      // 图书是否处于可用状态
+      bookAvailable: false,
+      navigation:{}
     };
   },
   methods: {
+    // 链接跳转页面
+    jumpTo(href) {
+      console.log("href", href);
+      this.rendition.display(href);
+      this.hideTitleAndMenu();
+    },
+    hideTitleAndMenu() {
+      this.ifTitleAndMenuShow = false;
+      this.$refs.menuBar.hideSetting();
+      this.$refs.menuBar.hideContent();
+    },
     showEpub() {
       this.book = new Epub(DOWNLOAD_URL);
-      this.rendition = this.book.renderTo("epub-reader", {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      console.log("window", window.innerWidth, window.innerHeight);
+      this.rendition = this.book.renderTo("epub-reader");
       this.rendition.display();
 
       //theme对象
@@ -104,17 +120,35 @@ export default {
       // 注册主题
       this.registerTheme();
 
-      this.setTheme(0)
+      this.setTheme(0);
+
+      //获取locations对象
+      // 通过epubjs钩子函数实现
+      this.book.ready
+        .then(() => {
+          this.navigation = this.book.navigation;
+          console.log(this.navigation);
+          return this.book.locations.generate();
+        })
+        .then((result) => {
+          this.locations = this.book.locations;
+          this.bookAvailable = true;
+        });
     },
-    setTheme(index){
-      console.log('pa',index)
+    onProgressChange(progress) {
+      const percentage = progress / 100;
+      const location =
+        percentage > 0 ? this.locations.cfiFromPercentage(percentage) : 0;
+      this.rendition.display(location);
+    },
+    setTheme(index) {
       this.defaultTheme = index;
       this.themes.select(this.themeList[index].name);
     },
-    registerTheme(){
-      this.themeList.forEach(theme =>{
-        this.themes.register(theme.name,theme.style)
-      })
+    registerTheme() {
+      this.themeList.forEach((theme) => {
+        this.themes.register(theme.name, theme.style);
+      });
     },
     prevPage() {
       if (this.rendition) {
@@ -166,7 +200,7 @@ export default {
       .left {
         flex: 0 0 px2rem(100);
         font-size: px2rem(80);
-        @include center // background-color: aquamarine;;;;;
+        @include center // background-color: aquamarine;;;;;;;;;;
       }
       .center {
         flex: 1;
@@ -174,7 +208,7 @@ export default {
       .right {
         flex: 0 0 px2rem(100);
         font-size: px2rem(80);
-        @include center // background-color: violet;;;;;
+        @include center // background-color: violet;;;;;;;;;;
       }
     }
   }
