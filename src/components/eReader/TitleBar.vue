@@ -1,7 +1,7 @@
 <template>
   <transition name="slide-down">
     <div class="title-wrapper" v-show="ifTitleAndMenuShow">
-      <div class="left">
+      <div class="left" @click="goBack">
         <span class="icon iconfont icon-left"></span>
       </div>
       <div class="right">
@@ -25,6 +25,11 @@ export default {
     ifTitleAndMenuShow: {
       type: Boolean,
       default: false,
+    },
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };

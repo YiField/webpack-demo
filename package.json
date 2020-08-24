@@ -26,6 +26,7 @@
     "epubjs": "0.3.73",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
     "file-loader": "^6.0.0",
+    "hexo-helper-live2d": "^3.1.1",
     "html-webpack-plugin": "^4.3.0",
     "install": "^0.13.0",
     "less": "^3.12.2",
