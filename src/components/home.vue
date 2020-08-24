@@ -4,7 +4,7 @@
      <br>
      <router-link to="/eReader">eReader</router-link>
      <br>
-
+    <router-link to="/better">better</router-link>
   </div>
 </template>
 <script>

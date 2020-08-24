@@ -4,6 +4,7 @@ const view = () => import('../components/views')
 const css = () => import('../components/views/css')
 const home = () => import('../components/home.vue')
 const eReader = () => import('../components/eReader');
+const better = () => import('../components/better')
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path: '/eReader',
     name: 'eReader',
     component: eReader
+  },
+  {
+    path:'/better',
+    name:'better',
+    component:better
   }
 ]
 export default new VueRouter({ routes })
