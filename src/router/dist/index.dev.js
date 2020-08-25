@@ -47,6 +47,12 @@ var better = function better() {
   });
 };
 
+var echarts = function echarts() {
+  return Promise.resolve().then(function () {
+    return _interopRequireWildcard(require('../components/views/charts.vue'));
+  });
+};
+
 _vue["default"].use(_vueRouter["default"]);
 
 var routes = [{
@@ -61,6 +67,10 @@ var routes = [{
     path: 'css',
     name: 'css',
     component: css
+  }, {
+    path: 'echarts',
+    name: 'echarts',
+    component: echarts
   }]
 }, {
   path: '/eReader',

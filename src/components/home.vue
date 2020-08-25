@@ -6,6 +6,8 @@
     <br />
     <router-link to="/better">better</router-link>
     <br />
+     <router-link to="/views/echarts">echarts</router-link>
+    <br />
     <loading v-show="isShowLoading"></loading>
     <br>
     <better></better>

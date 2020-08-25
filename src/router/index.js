@@ -5,6 +5,7 @@ const css = () => import('../components/views/css')
 const home = () => import('../components/home.vue')
 const eReader = () => import('../components/eReader');
 const better = () => import('../components/better')
+const echarts = () => import('../components/views/charts.vue')
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
         path: 'css',
         name: 'css',
         component: css
+      },
+      {
+        path: 'echarts',
+        name: 'echarts',
+        component: echarts
       }
     ]
   },
@@ -32,9 +38,9 @@ const routes = [
     component: eReader
   },
   {
-    path:'/better',
-    name:'better',
-    component:better
+    path: '/better',
+    name: 'better',
+    component: better
   }
 ]
 export default new VueRouter({ routes })

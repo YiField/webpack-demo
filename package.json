@@ -22,6 +22,7 @@
     "copy-webpack-plugin": "^6.0.3",
     "cross-env": "^7.0.2",
     "css-loader": "^4.2.1",
+    "echarts": "^4.8.0",
     "enhanced-resolve": "^4.3.0",
     "epubjs": "0.3.73",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
