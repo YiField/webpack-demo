@@ -7,10 +7,14 @@ import router from './router'
 import './assets/styles/common.scss'
 import '@fortawesome/fontawesome-free/css/all.css'
 import './assets/styles/iconfont.css'
+import Store from './store'
 const root = document.createElement('div');
 document.body.appendChild(root)
 
+Vue.use(Store);
+
 new Vue({
   render: (h) => h(App),
-  router
+  router,
+  store: Store.store
 }).$mount(root)
