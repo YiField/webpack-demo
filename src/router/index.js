@@ -1,13 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-const view = () => import('../components/views')
-const css = () => import('../components/views/css')
-const home = () => import('../components/home.vue')
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+const view = () => import('../components/views');
+const css = () => import('../components/views/css');
+const home = () => import('../components/home.vue');
 const eReader = () => import('../components/eReader');
-const better = () => import('../components/better')
-const echarts = () => import('../components/views/charts.vue')
+const better = () => import('../components/better');
+const echarts = () => import('../components/views/charts.vue');
+const demo = () => import('../components/demo/index.vue');
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -41,6 +42,11 @@ const routes = [
     path: '/better',
     name: 'better',
     component: better
+  },
+  {
+    path: '/demo',
+    name: 'better',
+    component: demo
   }
-]
-export default new VueRouter({ routes })
+];
+export default new VueRouter({ routes });

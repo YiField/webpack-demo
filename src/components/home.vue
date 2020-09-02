@@ -6,18 +6,20 @@
     <br />
     <router-link to="/better">better</router-link>
     <br />
-     <router-link to="/views/echarts">echarts</router-link>
+    <router-link to="/views/echarts">echarts</router-link>
     <br />
     <loading v-show="isShowLoading"></loading>
-    <br>
+    <br />
     <better></better>
+    <br />
+    <router-link to="/demo">demo</router-link>
   </div>
 </template>
 <script>
-import loading from "./common/Loading";
-import better from "./better"
+import loading from './common/Loading';
+import better from './better';
 export default {
-  name: "home",
+  name: 'home',
   components: {
     loading,
     better
@@ -26,6 +28,6 @@ export default {
     isShowLoading() {
       return this.$store.state.loading.isLoading;
     }
-  },
+  }
 };
 </script>
