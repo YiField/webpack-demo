@@ -55,7 +55,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 1024,
-              name: '[name]-aaa.[ext]' //[name]:原来的名字 [ext]:文件扩展名
+              use: ['url-loader?limit=8000&name=img/[name].[hash].[ext]'] //[name]:原来的名字 [ext]:文件扩展名
             }
           }
         ]
@@ -124,7 +124,7 @@ if (isDev) {
   config.devtool = '#cheap-module-eval-source-map'; //浏览器调试显示源码
   config.devServer = {
     port: 8009,
-    host: '0.0.0.0',
+    host: 'localhost',
     overlay: {
       errors: true
     },

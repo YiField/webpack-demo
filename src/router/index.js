@@ -7,6 +7,7 @@ const eReader = () => import('../components/eReader');
 const better = () => import('../components/better');
 const echarts = () => import('../components/views/charts.vue');
 const demo = () => import('../components/demo/index.vue');
+const RichTextEditor = () => import('../components/rich-text-editor');
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/demo',
     name: 'better',
     component: demo
+  },
+  {
+    path: '/richText',
+    name: 'richText',
+    component: RichTextEditor
   }
 ];
 export default new VueRouter({ routes });

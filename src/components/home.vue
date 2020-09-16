@@ -13,16 +13,22 @@
     <better></better>
     <br />
     <router-link to="/demo">demo</router-link>
+    <robot></robot>
+    <editor></editor>
   </div>
 </template>
 <script>
 import loading from './common/Loading';
 import better from './better';
+import robot from './fixed-robot';
+import editor from '@/components/rich-text-editor/index';
 export default {
   name: 'home',
   components: {
     loading,
-    better
+    better,
+    robot,
+    editor
   },
   computed: {
     isShowLoading() {
