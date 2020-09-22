@@ -4,8 +4,10 @@
 
 <script>
 import mixins from './mixin';
+
 export default {
   mixins: [mixins],
+
   created() {
     console.log('created', this.isShowing);
   },
@@ -17,7 +19,8 @@ export default {
     toogleShow() {
       console.log('toggleshow from components')
     }
-  }
+  },
+
 };
 </script>
 
