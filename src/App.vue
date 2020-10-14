@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       text: "lalalal",
+      test2:'dddd'
     };
   },
 };
