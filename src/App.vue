@@ -7,9 +7,10 @@
 export default {
   data() {
     return {
-      text: "lalalal",
+      text: 'lalalal',
+      mytest: 'testtest'
     };
-  },
+  }
 };
 </script>
 <style scoped>
