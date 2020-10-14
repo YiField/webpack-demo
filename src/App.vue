@@ -8,10 +8,12 @@ export default {
   data() {
     return {
       text: "lalalal",
-      test2:'dddd'
     };
   },
 };
 </script>
 <style scoped>
+.mytest{
+  color:red
+}
 </style>
