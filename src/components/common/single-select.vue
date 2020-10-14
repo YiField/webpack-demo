@@ -1,5 +1,5 @@
 <template>
-<div>group</div>
+<div></div>
 </template>
 
 <script>

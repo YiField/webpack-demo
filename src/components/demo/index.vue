@@ -72,12 +72,12 @@ export default {
       }
     },
     shuffle() {
-      console.log('shuffle')
-      let { moduleList } = this;
+      console.log('shuffle');
+      let { moduleList } = this; //对象的解构赋值
       let resultArr = [];
-      while (moduleList.length >= 0) {
+      while (moduleList.length > 0) {
         let index = Math.floor(Math.random() * moduleList.length);
-        // resultArr.push(moduleList[index]);
+        resultArr.push(moduleList[index]);
         moduleList.splice(index, 1);
       }
       this.moduleList = resultArr;
@@ -85,18 +85,40 @@ export default {
   },
   computed: {
     userComponentName() {
+      /**  当我们改变isMember这个变量就可以实现动态切换组件了。
+      这样做的好处在于，
+      当我们使用动态导入的时候。
+      webpack会将与导入函数匹配的每个文件单独创建一个chunk，
+      也就是我们常说的分包加载，而不会一次性加载全部组件。
+      当前样例并不能看出具体有多大的性能提升，但实际开发中，这个优势会非常明显。*/
       let { isMember } = this;
-      // return isMember ? 'member-info' : 'user-info';
       let component = isMember ? 'member-info' : 'user-info';
-      // 动态import的形式导入了子组
+      // 动态import的形式导入了子组 过import动态导入组件 配合webpack实现组件分离
       return () => import(`./${component}`);
     },
     componentImstances() {
+      // let { moduleList } = this;
+      // //array.map严格模式下不能使用caller arguments ，import语法应该有使用到
+      // return moduleList.map(item => {
+      //   item.imstance = () => import(`./${item.type}`);
+      //   return item;
+      // });
+      // 动态导入异常的组件捕获并输出默认模板
+      console.log('lala')
       let { moduleList } = this;
-      //array.map严格模式下不能使用caller arguments ，import语法应该有使用到
+      const that = this;
       return moduleList.map(item => {
-        item.imstance = () => import(`./${item.type}`);
-        return item;
+        item.imstance = () => {
+          return new Promise((reslove, reject) => {
+            let imstance = import(`./${item.type}`).call(that);
+            imstance.then(res => {
+              reslove(res);
+            });
+            imstance.catch(e => {
+              reslove(import('./error'));
+            });
+          });
+        };
       });
     }
   }
